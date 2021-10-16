@@ -1,11 +1,20 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
 import CustomDropdown from './component/Custom Dropdown/CustomDropdown';
+import data from './data/countries.json'
+
 
 function App() {
+  const [selectedValue, setSelectedValue] = useState(null)
+
+
   return (
     <div className="App">
-      <CustomDropdown />
+      <CustomDropdown 
+        options={data}
+        placeholder="Select country.."
+        selectedValue={selectedValue}
+        onChange={(val) => setSelectedValue(val)}
+      />
     </div>
   );
 }
