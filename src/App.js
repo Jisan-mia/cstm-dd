@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import CustomDropdown from './component/Custom Dropdown/CustomDropdown';
-import data from './data/countries.json'
+import data from './data/animals.json'
 
 
 function App() {
@@ -11,8 +11,10 @@ function App() {
     <div className="App">
       <CustomDropdown 
         options={data}
-        placeholder="Select country.."
+        placeholder="Select animal.."
         selectedValue={selectedValue}
+        id='id'
+        label='name'
         onChange={(val) => setSelectedValue(val)}
       />
     </div>
