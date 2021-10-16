@@ -8,7 +8,8 @@ const CustomDropdown = (
     selectedValue, 
     id,
     label,
-    onChange
+    onChange,
+    isEditable
   }
   ) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,13 +26,15 @@ const CustomDropdown = (
     return () => ['click', 'touchend'].forEach(event => {
       document.removeEventListener(event, toggleDropdown)
     })
+    
   }, []);
 
   function toggleDropdown(e) {
-    setIsOpen(e && e.target == ref.current)
+    setIsOpen(e && e.target === ref.current)
   }
 
   const filterOptions = (options) => {
+    if(!isEditable) return options;
     return options.filter(
       option => 
         option[label].toLowerCase().indexOf(query.toLowerCase()) > -1
@@ -55,23 +58,33 @@ const CustomDropdown = (
     <div className={styles.dropdown}>
       <div 
         className={styles.control} 
-        // onClick={() => setIsOpen(!isOpen)}
+        onClick={() => {
+          if(!isEditable) setIsOpen(!isOpen)
+          else return
+        }}
+       
+      
       >
-        <div className={styles.selected__value} >
-        
+        <div className={styles.selected__value} ref={ref}>
+          {
+            isEditable ? (
+              <input 
+                type="text" 
+                ref={ref}
+                placeholder={selectedValue ? selectedValue[label] : placeholder}
+                value={displayInputValue()}
+                onChange={e => {
+                  setQuery(e.target.value);
+                  onChange(null)
+                }}
+                onClick={toggleDropdown}
+                onTouchEnd={toggleDropdown}
+              />
+            )
+            : selectedValue ? selectedValue[label] : placeholder
+          }
           {/* {selectedValue ? selectedValue[label] : placeholder} */}
-          <input 
-            type="text" 
-            ref={ref}
-            placeholder={selectedValue ? selectedValue[label] : placeholder}
-            value={displayInputValue()}
-            onChange={e => {
-              setQuery(e.target.value);
-              onChange(null)
-            }}
-            onClick={toggleDropdown}
-            onTouchEnd={toggleDropdown}
-          />
+          
         
         </div>
         <div className={`${styles.arrow} ${isOpen ? styles.open : null}`}></div>
@@ -79,14 +92,13 @@ const CustomDropdown = (
 
       <div className={`${styles.options__container} ${isOpen ? styles.open : null}`}>
         {
-          filterOptions(options).map(option => 
+           filterOptions(options).map(option => 
             (
               <div 
                 key={option[id]} 
                 className={`${styles.options__item} ${selectedValue === option ? styles.selected : null}`} 
                 onClick={() => handleSelectOption(option)}
                 onTouchEnd={() => handleSelectOption(option)}
-
               >
                 {option[label]}
               </div>

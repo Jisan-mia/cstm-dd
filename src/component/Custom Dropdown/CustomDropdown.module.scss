@@ -22,7 +22,7 @@
     border-width: 0 5px 5px;
   }
   
-  .selected__value input{
+  .selected__area{
     line-height: 1.5;
     font-size: 1rem;
     background-color: #fff;
@@ -34,6 +34,9 @@
     padding: 8px 52px 8px 10px;
     transition: all 200ms ease;
     width: 100%;
+  }
+  .selected__value, .selected__value input{
+    @extend .selected__area;
   }
   
   .options__container {

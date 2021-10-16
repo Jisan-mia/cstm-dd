@@ -5,6 +5,7 @@ import data from './data/countries.json'
 
 function App() {
   const [selectedValue, setSelectedValue] = useState(null)
+  const [isEditable, setIsEditable] = useState(false)
 
 
   return (
@@ -16,6 +17,7 @@ function App() {
         id='code'
         label='name'
         onChange={(val) => setSelectedValue(val)}
+        isEditable={isEditable}
       />
     </div>
   );
