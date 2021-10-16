@@ -17,11 +17,17 @@ const CustomDropdown = (
   const ref = useRef(null);
 
   useEffect(() => {
-    document.addEventListener('click', closeDropdown);
-    return () => document.removeEventListener('click', closeDropdown)
+    // fixing mobile support
+    ['click', 'touchend'].forEach(event => {
+      document.addEventListener(event, toggleDropdown);
+    })
+
+    return () => ['click', 'touchend'].forEach(event => {
+      document.removeEventListener(event, toggleDropdown)
+    })
   }, []);
 
-  function closeDropdown(e) {
+  function toggleDropdown(e) {
     setIsOpen(e && e.target == ref.current)
   }
 
@@ -39,9 +45,18 @@ const CustomDropdown = (
     return ''
   }
 
+  const handleSelectOption = option => {
+    setQuery('');
+    onChange(option);
+    setIsOpen(false);
+  }
+
   return (
     <div className={styles.dropdown}>
-      <div className={styles.control} onClick={() => setIsOpen(!isOpen)}>
+      <div 
+        className={styles.control} 
+        // onClick={() => setIsOpen(!isOpen)}
+      >
         <div className={styles.selected__value} >
         
           {/* {selectedValue ? selectedValue[label] : placeholder} */}
@@ -54,7 +69,8 @@ const CustomDropdown = (
               setQuery(e.target.value);
               onChange(null)
             }}
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={toggleDropdown}
+            onTouchEnd={toggleDropdown}
           />
         
         </div>
@@ -68,11 +84,10 @@ const CustomDropdown = (
               <div 
                 key={option[id]} 
                 className={`${styles.options__item} ${selectedValue === option ? styles.selected : null}`} 
-                onClick={() => {
-                  setQuery('');
-                  onChange(option);
-                  setIsOpen(false);
-                }}>
+                onClick={() => handleSelectOption(option)}
+                onTouchEnd={() => handleSelectOption(option)}
+
+              >
                 {option[label]}
               </div>
             )
