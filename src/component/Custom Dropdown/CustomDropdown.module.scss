@@ -35,7 +35,10 @@
     transition: all 200ms ease;
     width: 100%;
   }
-  .selected__value, .selected__value input{
+  .selected__value{
+    @extend .selected__area;
+  }
+  .selected__input__value input{
     @extend .selected__area;
   }
   

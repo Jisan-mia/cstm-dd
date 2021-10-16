@@ -16,6 +16,7 @@ const CustomDropdown = (
   const [query, setQuery] = useState('')
 
   const ref = useRef(null);
+  const inputRef = useRef(null)
 
   useEffect(() => {
     // fixing mobile support
@@ -30,7 +31,12 @@ const CustomDropdown = (
   }, []);
 
   function toggleDropdown(e) {
-    setIsOpen(e && e.target === ref.current)
+    if(isEditable) {
+      setIsOpen(e && e.target === inputRef.current)  
+    } else {
+      setIsOpen(e && e.target === ref.current)
+    }
+    
   }
 
   const filterOptions = (options) => {
@@ -65,12 +71,12 @@ const CustomDropdown = (
        
       
       >
-        <div className={styles.selected__value} ref={ref}>
+        <div className={`${isEditable ? styles.selected__input__value : styles.selected__value}`} ref={ref}>
           {
             isEditable ? (
               <input 
                 type="text" 
-                ref={ref}
+                ref={inputRef}
                 placeholder={selectedValue ? selectedValue[label] : placeholder}
                 value={displayInputValue()}
                 onChange={e => {
