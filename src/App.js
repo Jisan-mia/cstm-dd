@@ -4,8 +4,8 @@ import data from './data/countries.json'
 
 
 function App() {
-  const [selectedValue, setSelectedValue] = useState(null)
-  const [isEditable, setIsEditable] = useState(true)
+  const [selectedValue, setSelectedValue] = useState({ name: "Afghanistan", code: "AF" })
+  const [isEditable, setIsEditable] = useState(false)
 
 
   return (

@@ -32,9 +32,10 @@ const CustomDropdown = (
 
   function toggleDropdown(e) {
     if(isEditable) {
-      setIsOpen(e && e.target === inputRef.current)  
-    } else {
-      setIsOpen(e && e.target === ref.current)
+      setIsOpen(e && e.target === inputRef.current);
+      
+    } else if(e && e.target !== ref.current) {
+        setIsOpen(e && e.target === ref.current)
     }
     
   }
@@ -96,23 +97,23 @@ const CustomDropdown = (
         <div className={`${styles.arrow} ${isOpen ? styles.open : null}`}></div>
       </div>
 
-      <div className={`${styles.options__container} ${isOpen ? styles.open : null}`}>
+      <ul className={`${styles.options__container} ${isOpen ? styles.open : null}`}>
         {
            filterOptions(options).map(option => 
             (
-              <div 
+              <li 
                 key={option[id]} 
                 className={`${styles.options__item} ${selectedValue === option ? styles.selected : null}`} 
                 onClick={() => handleSelectOption(option)}
                 onTouchEnd={() => handleSelectOption(option)}
               >
                 {option[label]}
-              </div>
+              </li>
             )
           )
         }
         
-      </div>
+      </ul>
     </div>
   )
 }
